@@ -23,6 +23,8 @@ public class Book {
 
     private LocalDate createdAt = LocalDate.now();
 
+    private LocalDate updatedAt = LocalDate.now();
+
     @Column(length = 100000)
     private String image;
 

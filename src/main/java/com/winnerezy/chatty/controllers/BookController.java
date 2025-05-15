@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/book")
@@ -28,6 +29,24 @@ public class BookController {
     public ResponseEntity<Book> createBook(@Valid @ModelAttribute BookDTO bookDTO) throws IOException {
         return ResponseEntity.ok(bookService.addBook(bookDTO));
 
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Book> editBook(@PathVariable("id") String id, @Valid @ModelAttribute BookDTO bookDTO) {
+        return ResponseEntity.ok(bookService.editBook(id, bookDTO));
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable("id") String id) {
+        String response = bookService.deleteBook(id);
+        return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam String title){
+        return ResponseEntity.ok(bookService.searchBooks(title));
     }
 
 }
