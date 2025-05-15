@@ -13,7 +13,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "fwehgoiweghweoghweogwgfw";
+    private final String SECRET_KEY = "3FA4B79C1E23D57A9F6D8BC321A49FEC5B41A27CB8DE992D1E1F7C67AB38F09A";
     private final long EXPIRATION_TIME = 86400000;
 
     private Key getSigningKey(){
