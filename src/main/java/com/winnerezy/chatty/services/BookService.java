@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -34,6 +35,15 @@ public class BookService {
         book.setImage(image);
         book.setAuthor(userService.getCurrentUser());
         return bookRepository.save(book);
+    }
+
+    public Optional<Book> getBook(String bookId){
+
+        Optional<Book> book = bookRepository.findById(bookId);
+        if(book.isEmpty()){
+            throw new ResourceNotFoundException("No book found with ID: " + bookId);
+        }
+        return book;
     }
 
     public Book editBook(String bookId, EditBookDTO editBookDTO) throws IOException {

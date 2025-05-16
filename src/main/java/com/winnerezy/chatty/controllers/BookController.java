@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/book")
@@ -29,6 +30,13 @@ public class BookController {
     @PostMapping("/create")
     public ResponseEntity<Book> createBook(@Valid @ModelAttribute BookDTO bookDTO) throws IOException {
         return ResponseEntity.ok(bookService.addBook(bookDTO));
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Book>> findBook(@PathVariable("id") String id) {
+        Optional<Book> book = bookService.getBook(id);
+        return ResponseEntity.ok(book);
 
     }
 
