@@ -11,6 +11,5 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
 
-    @Query(value = "SELECT * FROM books WHERE title ILIKE %:title%", nativeQuery = true)
-    List<Book> searchByTitleIgnoreCase(@Param("title") String title);
+    List<Book> findByTitleContainingIgnoreCase(String title);
 }

@@ -1,6 +1,7 @@
 package com.winnerezy.chatty.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -30,6 +31,6 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
-    @JsonIgnoreProperties({"password"})
+    @JsonIncludeProperties("username")
     private User author;
 }

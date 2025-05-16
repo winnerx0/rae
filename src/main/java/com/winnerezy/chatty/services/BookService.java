@@ -2,6 +2,7 @@ package com.winnerezy.chatty.services;
 
 import com.winnerezy.chatty.config.ImageConverter;
 import com.winnerezy.chatty.dto.BookDTO;
+import com.winnerezy.chatty.dto.EditBookDTO;
 import com.winnerezy.chatty.exceptions.ResourceNotFoundException;
 import com.winnerezy.chatty.models.Book;
 import com.winnerezy.chatty.repositories.BookRepository;
@@ -35,10 +36,18 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book editBook(String bookId, BookDTO bookDTO){
+    public Book editBook(String bookId, EditBookDTO editBookDTO) throws IOException {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("No book found with ID: " + bookId));
-        book.setTitle(bookDTO.title());
-        book.setDescription(bookDTO.description());
+        if (editBookDTO.title() != null) {
+            book.setTitle(editBookDTO.title());
+        }
+        if (editBookDTO.description() != null) {
+            book.setDescription(editBookDTO.description());
+        }
+
+        if(editBookDTO.image() != null){
+            book.setImage(imageConverter.convertToBase64(editBookDTO.image()));
+        }
         book.setUpdatedAt(LocalDate.now());
         return bookRepository.save(book);
     }
@@ -52,7 +61,7 @@ public class BookService {
     }
 
     public List<Book> searchBooks(String title){
-        return bookRepository.searchByTitleIgnoreCase(title);
+        return bookRepository.findByTitleContainingIgnoreCase(title);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.winnerezy.chatty.controllers;
 
 import com.winnerezy.chatty.dto.BookDTO;
+import com.winnerezy.chatty.dto.EditBookDTO;
 import com.winnerezy.chatty.models.Book;
 import com.winnerezy.chatty.repositories.BookRepository;
 import com.winnerezy.chatty.services.BookService;
@@ -32,8 +33,8 @@ public class BookController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Book> editBook(@PathVariable("id") String id, @Valid @ModelAttribute BookDTO bookDTO) {
-        return ResponseEntity.ok(bookService.editBook(id, bookDTO));
+    public ResponseEntity<Book> editBook(@PathVariable("id") String id, @Valid @ModelAttribute EditBookDTO editBookDTO) throws IOException {
+        return ResponseEntity.ok(bookService.editBook(id, editBookDTO));
 
     }
 
