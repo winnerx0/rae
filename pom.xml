@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.winnerezy</groupId>
-	<artifactId>chatty</artifactId>
+	<artifactId>rae</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>chatty</name>
-	<description>A simple chat applicaion</description>
+	<description>A book CMS</description>
 	<url/>
 	<licenses>
 		<license/>
