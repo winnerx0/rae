@@ -2,6 +2,7 @@ package com.winnerezy.rae.config;
 
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.exceptions.ResourceNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
