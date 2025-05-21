@@ -32,6 +32,7 @@ public class BookService {
         book.setDescription(bookDTO.description());
         String image = imageConverter.convertToBase64(bookDTO.image());
         book.setImage(image);
+        book.setStars(bookDTO.stars());
         book.setAuthor(userService.getCurrentUser());
         return bookRepository.save(book);
     }

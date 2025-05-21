@@ -24,7 +24,7 @@ public class Book {
 
     private LocalDate updatedAt = LocalDate.now();
 
-//    private int stars = 1;
+    private double stars;
 
     @Column(length = 100000)
     private String image;
