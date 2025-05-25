@@ -1,5 +1,6 @@
 package com.winnerezy.rae.services;
 
+import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.models.User;
 import com.winnerezy.rae.repositories.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -19,13 +20,13 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new RuntimeException("No authenticated user found");
+            throw new NoUserFoundException("No authenticated user found");
         }
 
         String username = authentication.getName();
 
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + username));
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoUserFoundException("User not found with email: " + username));
     }
 
 }

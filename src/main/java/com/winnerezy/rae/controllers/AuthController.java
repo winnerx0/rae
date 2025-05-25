@@ -2,6 +2,7 @@ package com.winnerezy.rae.controllers;
 
 import com.winnerezy.rae.dto.LoginDTO;
 import com.winnerezy.rae.dto.RegisterDTO;
+import com.winnerezy.rae.responses.AuthResponse;
 import com.winnerezy.rae.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO){
-        return authService.register(registerDTO);
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterDTO registerDTO){
+        return ResponseEntity.ok(new AuthResponse(authService.register(registerDTO)));
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDTO){
-        return authService.login(loginDTO);
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginDTO loginDTO){
+        return ResponseEntity.ok(new AuthResponse(authService.login(loginDTO)));
     }
 }

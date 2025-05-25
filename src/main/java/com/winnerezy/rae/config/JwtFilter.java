@@ -1,6 +1,6 @@
 package com.winnerezy.rae.config;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import com.winnerezy.rae.services.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,10 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -20,10 +20,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
-    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService, HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -44,10 +46,8 @@ public class JwtFilter extends OncePerRequestFilter {
                   auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                   SecurityContextHolder.getContext().setAuthentication(auth);
               }
-          } catch(UsernameNotFoundException e){
-              response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-              response.getWriter().write("Invalid token");
-              return;
+          } catch(Exception e){
+             handlerExceptionResolver.resolveException(request, response, null, e);
           }
         }
         filterChain.doFilter(request, response);

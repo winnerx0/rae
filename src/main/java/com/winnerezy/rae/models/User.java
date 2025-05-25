@@ -22,21 +22,17 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    private String id;
 
-    String email;
+    private String password;
 
-    String password;
+    private String username;
 
-    String username;
+    private String name;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIncludeProperties({ "id" })
     List<Book> books = new ArrayList<>();
-
-    public String getUsername(){
-        return email;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

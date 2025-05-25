@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,10 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.userService = userService;
         this.imageConverter = imageConverter;
+    }
+
+    public List<Book> getBooks(){
+        return bookRepository.findAll();
     }
 
     public Book addBook(BookDTO bookDTO) throws IOException {
@@ -58,7 +63,7 @@ public class BookService {
         if(editBookDTO.image() != null){
             book.setImage(imageConverter.convertToBase64(editBookDTO.image()));
         }
-        book.setUpdatedAt(LocalDate.now());
+        book.setUpdatedAt(LocalDateTime.now());
         return bookRepository.save(book);
     }
 

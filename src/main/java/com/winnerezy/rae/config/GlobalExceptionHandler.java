@@ -1,5 +1,6 @@
 package com.winnerezy.rae.config;
 
+import com.winnerezy.rae.exceptions.AuthException;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.exceptions.ResourceNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -37,5 +38,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<String> handleAuthException(AuthException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

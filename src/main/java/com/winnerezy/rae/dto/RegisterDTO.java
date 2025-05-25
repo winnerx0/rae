@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record RegisterDTO(
         @NotBlank(message = "Username cannot be blank")
-        String username,
+        String name,
 
         @NotBlank(message = "Password cannot be blank")
         @Size(min = 8, message = "Password needs to be at least 8 characters")

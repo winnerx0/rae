@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "books")
 @Getter
@@ -20,9 +21,9 @@ public class Book {
 
     private String description;
 
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDate updatedAt = LocalDate.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     private double stars;
 
@@ -30,7 +31,7 @@ public class Book {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    @JsonIncludeProperties("username")
+    @JoinColumn(name = "author_id")
+    @JsonIncludeProperties("name")
     private User author;
 }

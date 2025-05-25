@@ -22,6 +22,12 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Book>> createBook() {
+        return ResponseEntity.ok(bookService.getBooks());
+
+    }
+
     @PostMapping("/")
     public ResponseEntity<Book> createBook(@Valid @ModelAttribute BookDTO bookDTO) throws IOException {
         return ResponseEntity.ok(bookService.addBook(bookDTO));

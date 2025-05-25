@@ -3,6 +3,7 @@ package com.winnerezy.rae.services;
 import com.winnerezy.rae.config.JwtUtil;
 import com.winnerezy.rae.dto.LoginDTO;
 import com.winnerezy.rae.dto.RegisterDTO;
+import com.winnerezy.rae.exceptions.AuthException;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.models.User;
 import com.winnerezy.rae.repositories.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,40 +31,36 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public ResponseEntity<String> register(RegisterDTO registerDTO){
+    public String register(RegisterDTO registerDTO){
 
        try {
-           if(userRepository.findByEmail(registerDTO.email()).isPresent()){
-               throw new RuntimeException("User with that email exists");
+           if(userRepository.findByUsername(registerDTO.email()).isPresent()){
+               throw new AuthException("User with that email exists");
            }
 
-           if(userRepository.findByUsername(registerDTO.username()).isPresent()){
-               throw new RuntimeException("User with that username exists");
+           if(userRepository.findByName(registerDTO.name()).isPresent()){
+               throw new AuthException("User with that username exists");
            }
 
            User user = new User();
-           user.setEmail(registerDTO.email());
-           user.setUsername(registerDTO.username());
+           user.setUsername(registerDTO.email());
+           user.setName(registerDTO.name());
            user.setPassword(passwordEncoder.encode(registerDTO.password()));
            userRepository.save(user);
 
-           String token = jwtUtil.generateToken(registerDTO.email());
-           return ResponseEntity.ok(token);
-       } catch(RuntimeException e){
-           return ResponseEntity.badRequest().body(e.getMessage());
+           return jwtUtil.generateToken(registerDTO.email());
+       } catch(AuthException e){
+           return e.getMessage();
        }
 
     }
 
-    public ResponseEntity<String> login(LoginDTO loginDTO){
+    public String login(LoginDTO loginDTO){
       try {
-          userRepository.findByEmail(loginDTO.email()).orElseThrow(() -> new NoUserFoundException("User Not Found"));
-
           authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password()));
-          String token = jwtUtil.generateToken(loginDTO.email());
-          return ResponseEntity.ok(token);
-      } catch(RuntimeException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
+          return jwtUtil.generateToken(loginDTO.email());
+      } catch(AuthenticationException e){
+          return e.getMessage();
     }
     }
 }
