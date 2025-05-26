@@ -25,7 +25,7 @@ export default function MainLayout({
   return (
     <main className="relative m-auto px-2 w-full flex flex-col items-center gap-4 min-h-dvh">
       <Header />
-      <section className="w-full max-w-5xl">{children}</section>
+      <section className="w-full max-w-7xl">{children}</section>
     </main>
   );
 }

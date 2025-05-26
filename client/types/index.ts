@@ -8,5 +8,5 @@ declare type Book = {
 }
 
 declare type User = {
-  username: string
+  name: string
 }
