@@ -1,57 +1,83 @@
 "use client";
 
 import api from "@/lib/api";
-import { Delete, Heading4, LucideDelete, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+interface Book {
+  id: string;
+  title: string;
+  description: string;
+  stars: number;
+  image: string;
+  author: {
+    name: string;
+  };
+}
 
 const Home = () => {
-  const [data, setData] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-    
+
   useEffect(() => {
-    async function fetchUsers() {
-      setIsLoading(true)
-      const res = await api.get("/book/");
-      const ans = res.data;
-      setData(ans);
-      setIsLoading(false)
-    }
-    fetchUsers();
+    const fetchBooks = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get("/book/");
+        setBooks(response.data);
+      } catch (error) {
+        console.error("Failed to fetch books:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBooks();
   }, []);
 
   const handleDelete = async (id: string) => {
-    const res = await api.delete(`/book/delete/${id}`);
+    try {
+      await api.delete(`/book/delete/${id}`);
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    } catch (error) {
+      console.error("Failed to delete book:", error);
+    }
   };
-  
-  if(isLoading) return <Loading/>
-  
+
+  if (isLoading) return <Loading />;
+
+  if (books.length === 0)
+    return <p className="text-center mt-10">No books available.</p>;
+
   return (
-    <div>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-4">
-        {data.length !== 0 &&
-          data.map((book) => (
-            <div
-              className="border rounded-md px-4 py-2 flex flex-col gap-4"
-              key={book.id}
-            >
-              <img src={book.image} alt={book.title} className="rounded-md" />
-              <div className="flex items-center justify-between">
-                <section>
-                
-                <h4 className="font-semibold">{`Name: ${book.title}`}</h4>
-                  <span>Author: { book.author.username }</span>
-                </section>
-                
-                <Trash
-                  className="cursor-pointer size-[25px]"
-                  onClick={() => handleDelete(book.id)}
-                />
-              </div>
-            </div>
-          ))}
-      </section>
-    </div>
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mx-auto">
+      {books.map(({ id, image, title, stars, author, description }) => (
+        
+        <Card key={id}>
+          <CardHeader>
+            <CardTitle>{ title }</CardTitle>
+          </CardHeader>
+          <CardContent>
+             <img src={image} alt={title} className="rounded-md object-cover" />
+
+          </CardContent>
+          <CardFooter className="flex-col items-start">
+            <p>( {stars} by {  author.name } )</p>
+            <span>{ description }</span>
+          </CardFooter>
+        </Card>
+
+      
+      ))}
+    </section>
   );
 };
 

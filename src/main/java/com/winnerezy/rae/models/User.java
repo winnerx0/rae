@@ -30,10 +30,6 @@ public class User implements UserDetails {
 
     private String name;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIncludeProperties({ "id" })
-    List<Book> books = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

@@ -22,13 +22,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationProvider authenticationProvider;
 
-    public AuthService(UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager){
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder, AuthenticationProvider authenticationProvider){
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
+        this.authenticationProvider = authenticationProvider;
     }
 
     public String register(RegisterDTO registerDTO){
@@ -57,7 +57,7 @@ public class AuthService {
 
     public String login(LoginDTO loginDTO){
       try {
-          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password()));
+          authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password()));
           return jwtUtil.generateToken(loginDTO.email());
       } catch(AuthenticationException e){
           return e.getMessage();

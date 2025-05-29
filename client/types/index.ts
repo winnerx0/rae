@@ -4,9 +4,10 @@ declare type Book = {
   description: string
   image: string
   stars: number
+  created_at: Date
   author: Partial<User>
 }
 
 declare type User = {
-  username: string
+  name: string
 }

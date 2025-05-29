@@ -1,5 +1,6 @@
 package com.winnerezy.rae.config;
 
+import com.winnerezy.rae.exceptions.AIException;
 import com.winnerezy.rae.exceptions.AuthException;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.exceptions.ResourceNotFoundException;
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<String> handleAuthException(AuthException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AIException.class)
+    public ResponseEntity<String> handleAIException(AIException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
