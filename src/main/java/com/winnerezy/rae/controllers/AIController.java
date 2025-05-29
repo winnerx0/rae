@@ -10,18 +10,21 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/ai")
 public class AIController {
 
     private final AIService aiService;
+
     public AIController(AIService aiService){
         this.aiService = aiService;
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> ai(@Valid @RequestBody MessageDTO messageDTO){
-        return ResponseEntity.ok(aiService.getResponse(messageDTO.getMessage()));
+    public ResponseEntity<String> ai(@Valid @ModelAttribute MessageDTO messageDTO) throws IOException {
+        return ResponseEntity.ok(aiService.getResponse(messageDTO.getMessage(), messageDTO.getFile()));
 
     }
 }

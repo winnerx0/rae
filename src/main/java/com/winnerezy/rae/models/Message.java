@@ -20,5 +20,7 @@ public class Message {
     @Column(length = 10000)
     private final String content;
 
+    private final String role;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -1,6 +1,5 @@
 package com.winnerezy.rae.services;
 
-import com.winnerezy.rae.config.GeminiConfig;
 import com.winnerezy.rae.exceptions.AIException;
 import com.winnerezy.rae.models.Message;
 import com.winnerezy.rae.repositories.MessageRepository;
@@ -8,8 +7,16 @@ import com.winnerezy.rae.responses.AIResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -31,20 +38,37 @@ public class AIService {
     private String geminiApiKey;
 
     @Transactional
-    public String getResponse(String message) {
+    public String getResponse(String message, MultipartFile multipartFile) throws IOException {
+
+        File file = File.createTempFile("audio", ".ogg");
+
+        multipartFile.transferTo(file);
+
+        Path path = Paths.get(file.toURI());
 
         List<Message> messages = messageRepository.findAllByOrderByCreatedAtAsc();
 
-        messageRepository.save(new Message(message));
+        messageRepository.save(new Message(message, "user"));
 
-        Map<String, Object> body = Map.of(
-                "contents", new Object[]{
-                        Map.of("parts", new Object[]{
-                                messages.stream().map((m) -> Map.of("text", m.getContent())),
-                                Map.of("text", message)
-                        })
-                }
-        );
+        List<Map<String, Object>> contents = new ArrayList<>();
+
+        for (Message m : messages) {
+            contents.add(Map.of("parts", List.of(
+                    Map.of("text", m.getContent())
+            ), "role", m.getRole()));
+        }
+
+        contents.add(Map.of("parts", List.of(
+                Map.of("inlineData", Map.of(
+                        "mimeType", "audio/ogg",
+                        "data", Base64.getEncoder().encodeToString(Files.readAllBytes(path))
+                ))
+        ), "role", "user"));
+
+        contents.add(Map.of("parts", List.of(
+                Map.of("text", message)
+        ), "role", "user"));
+        Map<String, Object> body = Map.of("contents", contents);
 
         AIResponse response = webClient
                 .post()
@@ -57,7 +81,7 @@ public class AIService {
                 .bodyToMono(AIResponse.class)
                 .block();
 
-        messageRepository.save(new Message(response.getCandidates().getLast().getContent().getParts().getLast().getText()));
+        messageRepository.save(new Message(response.getCandidates().getLast().getContent().getParts().getLast().getText(), "model"));
 
         return response.getCandidates().getLast().getContent().getParts().getLast().getText();
     }

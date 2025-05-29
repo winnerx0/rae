@@ -13,4 +13,3 @@ const page = () => {
 }
 
 export default page
-b
