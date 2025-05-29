@@ -38,7 +38,7 @@ public class AIService {
     private String geminiApiKey;
 
     @Transactional
-    public String getResponse(String message, MultipartFile multipartFile) throws IOException {
+    public String getResponse(String sessionId, String message, MultipartFile multipartFile) throws IOException {
 
         File file = File.createTempFile("audio", ".ogg");
 
@@ -46,7 +46,7 @@ public class AIService {
 
         Path path = Paths.get(file.toURI());
 
-        List<Message> messages = messageRepository.findAllByOrderByCreatedAtAsc();
+        List<Message> messages = messageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
 
         messageRepository.save(new Message(message, "user"));
 

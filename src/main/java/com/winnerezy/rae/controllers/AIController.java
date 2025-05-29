@@ -22,9 +22,9 @@ public class AIController {
         this.aiService = aiService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<String> ai(@Valid @ModelAttribute MessageDTO messageDTO) throws IOException {
-        return ResponseEntity.ok(aiService.getResponse(messageDTO.getMessage(), messageDTO.getFile()));
+    @PostMapping("/{sessionId}")
+    public ResponseEntity<String> ai(@Valid @PathVariable String sessionId, @Valid @ModelAttribute MessageDTO messageDTO) throws IOException {
+        return ResponseEntity.ok(aiService.getResponse(sessionId, messageDTO.getMessage(), messageDTO.getFile()));
 
     }
 }

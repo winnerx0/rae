@@ -1,5 +1,6 @@
 package com.winnerezy.rae.models;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,9 @@ public class Message {
     private final String role;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    @JsonIncludeProperties("name")
+    private Session session;
 }
