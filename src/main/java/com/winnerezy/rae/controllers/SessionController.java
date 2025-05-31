@@ -1,11 +1,15 @@
 package com.winnerezy.rae.controllers;
 
 import com.winnerezy.rae.dto.SessionDTO;
+import com.winnerezy.rae.models.Session;
 import com.winnerezy.rae.responses.SessionResponse;
 import com.winnerezy.rae.services.SessionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/session")
@@ -18,7 +22,12 @@ public class SessionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<SessionResponse> createSession(@Valid @RequestBody SessionDTO sessionDTO){
-        return ResponseEntity.ok(new SessionResponse(sessionService.createSession(sessionDTO.getName())));
+    public ResponseEntity<Session> createSession(@Valid @RequestBody SessionDTO sessionDTO) throws IOException {
+        return ResponseEntity.ok(sessionService.createSession(sessionDTO.getName()));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<Session>> getSession(){
+        return ResponseEntity.ok(sessionService.getSessions());
     }
 }

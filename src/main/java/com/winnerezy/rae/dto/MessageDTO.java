@@ -10,7 +10,4 @@ public class MessageDTO {
 
     @NotBlank(message = "Message required")
     private String message;
-
-    @NotNull(message = "Audio file required")
-    private MultipartFile file;
 }

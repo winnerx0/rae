@@ -1,7 +1,9 @@
 package com.winnerezy.rae.models;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public class Session {
 
@@ -22,6 +25,11 @@ public class Session {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
     List<Message> messages;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIncludeProperties("name")
+    private final User user;
 }

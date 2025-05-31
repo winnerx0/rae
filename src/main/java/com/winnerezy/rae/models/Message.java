@@ -28,5 +28,5 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "session_id")
     @JsonIncludeProperties("name")
-    private Session session;
+    private final Session session;
 }

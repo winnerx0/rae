@@ -12,9 +12,6 @@ const page = () => {
             <Link href={"/home"} className="underline">
               Home
             </Link>
-            <Link href={"/feed"} className="underline">
-              Feed
-            </Link>
           </div>
           <AlignRight className="flex sm:hidden" />
           <div className="hidden sm:flex items-center">
@@ -42,12 +39,11 @@ const page = () => {
       <section className="w-full max-w-5xl self-center">
         <div className="self-start mt-36 lg:w-2/3">
           <h4 className="text-3xl md:text-4xl xl:text-6xl font-bold">
-            Track Your Books, <span className="text-blue-500">Faster</span> And{" "}
+            Summarize your Meetings <span className="text-blue-500">Faster</span> And{" "}
             <span className="text-blue-500">Easier</span>
           </h4>
-          <p className="font-semibold text-lg md:text-2xl">
-            Track your books, manga and light novels and organize your
-            collections
+          <p className="text-lg md:text-2xl">
+            Record and Understand your meetings as you go
           </p>
         </div>
       </section>

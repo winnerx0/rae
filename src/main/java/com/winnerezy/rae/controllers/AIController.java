@@ -23,8 +23,9 @@ public class AIController {
     }
 
     @PostMapping("/{sessionId}")
-    public ResponseEntity<String> ai(@Valid @PathVariable String sessionId, @Valid @ModelAttribute MessageDTO messageDTO) throws IOException {
-        return ResponseEntity.ok(aiService.getResponse(sessionId, messageDTO.getMessage(), messageDTO.getFile()));
+    public ResponseEntity<AIResponse> ai(@Valid @PathVariable String sessionId, @Valid @RequestBody MessageDTO messageDTO) throws IOException {
+        String message = aiService.getResponse(sessionId, messageDTO.getMessage());
+        return ResponseEntity.ok(new AIResponse(message));
 
     }
 }

@@ -30,6 +30,9 @@ public class User implements UserDetails {
 
     private String name;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Session> sessions;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

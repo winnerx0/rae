@@ -6,7 +6,7 @@ const page = () => {
 
   return (
     <div className="flex justify-between h-full w-full">
-      <Sidebar/>
+      {/* <Sidebar/> */}
       <Home/>
     </div>
   )
