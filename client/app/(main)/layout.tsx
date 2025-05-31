@@ -23,8 +23,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="relative m-auto px-2 w-full flex flex-col items-center gap-4 min-h-dvh">
-      <Header />
+    <main className="m-auto w-full flex flex-col items-center gap-4 h-full">
       <section className="w-full max-w-7xl">{children}</section>
     </main>
   );

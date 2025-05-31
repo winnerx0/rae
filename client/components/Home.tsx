@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { formatRelative } from "date-fns/fp";
+import { formatDistanceToNow } from "date-fns";
 
 interface Session {
   id: string;
@@ -63,10 +65,10 @@ const Home = () => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-7xl mx-auto">
       {sessions.map(({ id, name, createdAt, user }) => (
-        <Link href={`/session/${id}`}>
+        <Link href={`/session/${id}`} key={id}>
         
         
-        <Card key={id}>
+        <Card >
           <CardHeader>
             <CardTitle>{ name }</CardTitle>
           </CardHeader>
@@ -74,10 +76,9 @@ const Home = () => {
              {/* <img src={image} alt={title} className="rounded-md object-cover" /> */}
 
           </CardContent>
-          <CardFooter className="flex-col items-start">
-            {/* <p>( {stars} by {  author.name } )</p>
-            <span>{ description }</span> */}
+          <CardFooter className="flex justify-between items-start">
             <ChevronRight/>
+              <p>{ formatDistanceToNow(createdAt) }</p>
           </CardFooter>
         </Card>
       </Link>

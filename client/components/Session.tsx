@@ -1,0 +1,141 @@
+"use client";
+import api from "@/lib/api";
+import { AxiosError } from "axios";
+import { SendHorizontal } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Textarea } from "./ui/textarea";
+
+const Session = ({ sessionId }: { sessionId: string }) => {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    async function fetchMessages() {
+      setIsLoading(true);
+      try {
+        const res = await api.get("/ai/" + sessionId);
+        if (res.status !== 200) {
+          throw new Error(res.data.message);
+        }
+        const ans = res.data;
+        setMessages(ans);
+      } catch (e: any) {
+        if (e instanceof AxiosError) {
+          console.log(e.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchMessages();
+  }, [sessionId]);
+
+  const handleMessage = async () => {
+    if (!message.trim()) return;
+
+    try {
+      const text = message;
+      setMessage("");
+
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        content: text,
+        role: "user",
+        createdAt: new Date(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+
+      const res = await api.post("/ai/" + sessionId, {
+        message: text,
+      });
+
+      if (res.status !== 201) {
+        throw new Error(res.data);
+      }
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: res.data.message,
+        role: "model",
+        createdAt: new Date(),
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleMessage();
+    }
+  };
+
+  return (
+    <div className="h-[calc(100dvh-120px)] flex flex-col">
+      <div className="flex-1 ">
+        <div className="flex flex-col h-full w-full max-w-3xl mx-auto px-4 py-4 gap-4 pb-28">
+          {isLoading && messages.length === 0 ? (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              <p className="text-2xl font-bold">Loading</p>
+            </div>
+          ) : messages.length === 0 && !isLoading ? (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              <p className="text-2xl font-bold">Start a conversation</p>
+            </div>
+          ) : (
+            messages.map((m) => (
+              <div
+                key={m.id}
+                className={`bg-card border p-3 h-min w-max rounded-lg max-w-[80%] ${
+                  m.role === "user"
+                    ? "self-end bg-primary text-primary-foreground"
+                    : "self-start"
+                }`}
+              >
+                <p className="text-wrap whitespace-pre-wrap">{m.content}</p>
+              </div>
+            ))
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="bg-background fixed bottom-0 w-full max-w-3xl self-center">
+        <div className="w-full max-w-3xl mx-auto p-4">
+          <div className="relative bg-card rounded-xl border">
+            <Textarea
+              value={message}
+              placeholder="Type your message..."
+              className="resize-none min-h-[60px] max-h-[200px] pr-12 border-none bg-transparent focus:border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              onClick={handleMessage}
+              disabled={!message.trim()}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <SendHorizontal className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Session;
