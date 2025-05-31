@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, XIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -16,35 +16,17 @@ import api from "@/lib/api";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import { Button } from "./ui/button";
-
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function AppSidebar() {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -63,23 +45,61 @@ export function AppSidebar() {
         }
       }
     }
-    fetchSessions()
+    fetchSessions();
   }, []);
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl font-bold mb-4">Rae</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-2xl font-bold mb-4">
+            Rae
+          </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="flex flex-col gap-4">
+            <SidebarMenu className="flex flex-col gap-2">
               <Button>New Session</Button>
               {sessions.map((session) => (
                 <SidebarMenuItem key={session.id}>
-                  <SidebarMenuButton asChild className="h-10">
-                    <a href={`/session/${session.id}`}>
-                      <span className="text-center w-full">{session.name}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <div className="hover:bg-zinc-800/90 flex items-center w-full hover:[&_.delete-icon]:opacity-100 h-10 rounded-lg">
+                    <SidebarMenuButton asChild className="h-10 flex-1 ">
+                      <div>
+                        <a
+                          href={`/session/${session.id}`}
+                          className="flex items-center w-full px-3"
+                        >
+                          <span className="text-left truncate flex-1">
+                            {session.name}
+                          </span>
+                        </a>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <button
+                              className="delete-icon h-8 w-8 opacity-0 transition-opacity cursor-pointer hover:bg-destructive/10 rounded flex items-center justify-center mr-2"
+                              type="button"
+                            >
+                              <XIcon className="h-4 w-4" />
+                            </button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Delete Session
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{session.name}
+                                "? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction className="bg-red-500 hover:bg-red-500/90 text-foreground">
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </SidebarMenuButton>
+                  </div>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
