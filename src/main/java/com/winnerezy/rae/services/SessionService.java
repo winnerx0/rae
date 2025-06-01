@@ -30,4 +30,9 @@ public class SessionService {
         User user = userService.getCurrentUser();
         return sessionRepository.findByUserIdOrderByCreatedAtAsc(user.getId()).orElseThrow(() -> new EntityNotFoundException("No Sessions Available"));
     }
+
+    public String deleteSession(String sessionId){
+        sessionRepository.deleteById(sessionId);
+        return "Deleted Successfully";
+    }
 }

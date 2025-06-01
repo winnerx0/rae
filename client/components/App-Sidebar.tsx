@@ -1,32 +1,32 @@
 "use client";
 
-import { Calendar, Home, Inbox, Search, Settings, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import api from "@/lib/api";
-import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 export function AppSidebar() {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -47,6 +47,12 @@ export function AppSidebar() {
     }
     fetchSessions();
   }, []);
+  
+  const handleDeleteSession = async (sessionId: string) => {
+    await api.delete("/s/" + sessionId)
+    setSessions((prev) => prev.filter(s => s.id !== sessionId))
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -75,6 +81,7 @@ export function AppSidebar() {
                             <button
                               className="delete-icon h-8 w-8 opacity-0 transition-opacity cursor-pointer hover:bg-destructive/10 rounded flex items-center justify-center mr-2"
                               type="button"
+                              
                             >
                               <XIcon className="h-4 w-4" />
                             </button>
@@ -91,7 +98,7 @@ export function AppSidebar() {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction className="bg-red-500 hover:bg-red-500/90 text-foreground">
+                              <AlertDialogAction className="bg-red-500 hover:bg-red-500/90 text-foreground" onClick={() => handleDeleteSession(session.id)}>
                                 Delete
                               </AlertDialogAction>
                             </AlertDialogFooter>

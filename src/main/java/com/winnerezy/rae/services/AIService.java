@@ -38,11 +38,9 @@ public class AIService {
     private String geminiApiKey;
 
     @Transactional
-    public String getResponse(String sessionId, String message) throws IOException {
+    public String getResponse(String sessionId, String message) {
 
         List<Message> messages = messageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
-
-//        log.atInfo().log(messages.getLast().getContent());
 
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new EntityNotFoundException("Session Not Found"));
 
@@ -51,7 +49,7 @@ public class AIService {
         List<Map<String, Object>> contents = new ArrayList<>();
 
         contents.add(Map.of("parts", List.of(
-                Map.of("text", "You are a compassionate, professional therapist. Your only role is to support me as a therapist would — through active listening, reflective responses, and thoughtful, open-ended questions. Do not provide advice, solutions, or coaching unless I ask. Do not act as a friend, coach, or advisor — just a calm, trained therapist helping me process my thoughts. Stay grounded, empathetic, and non-judgmental. Let’s begin when I’m ready.")
+                Map.of("text", "You are a compassionate, professional therapist. Your only role is to support me as a therapist would — through active listening, reflective responses, and thoughtful, open-ended questions. Do not provide advice, solutions, or coaching unless I ask. Do not act as a friend, coach, or advisor — just a calm, trained therapist helping me process my thoughts. Stay grounded, empathetic, and non-judgmental and please act like a real human. Let’s begin when I’m ready.")
         ), "role", "user"));
 
         for (Message m : messages) {
@@ -80,6 +78,10 @@ public class AIService {
         messageRepository.save(new Message(response.getCandidates().getLast().getContent().getParts().getLast().getText(), "model", session));
 
         return response.getCandidates().getLast().getContent().getParts().getLast().getText();
+    }
+
+    public List<Message> getMessages(String sessionId){
+        return messageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
     }
 
 }

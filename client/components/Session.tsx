@@ -10,7 +10,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isThinking, setIsThinking] = useState(false);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -22,6 +22,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
   useEffect(() => {
     async function fetchMessages() {
       setIsLoading(true);
+
       try {
         const res = await api.get("/ai/" + sessionId);
         if (res.status !== 200) {
@@ -35,6 +36,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
         }
       } finally {
         setIsLoading(false);
+        setIsThinking(false);
       }
     }
     fetchMessages();
@@ -42,7 +44,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
 
   const handleMessage = async () => {
     if (!message.trim()) return;
-
+    setIsThinking(true);
     try {
       const text = message;
       setMessage("");
@@ -74,6 +76,8 @@ const Session = ({ sessionId }: { sessionId: string }) => {
       if (e instanceof AxiosError) {
         console.log(e);
       }
+    } finally {
+      setIsThinking(false);
     }
   };
 
@@ -109,6 +113,11 @@ const Session = ({ sessionId }: { sessionId: string }) => {
                 <p className="text-wrap whitespace-pre-wrap">{m.content}</p>
               </div>
             ))
+          )}
+          {isThinking && (
+            <div className="bg-card border p-3 h-min w-max rounded-lg max-w-[80%] self-start">
+              <span className="animate-pulse">Thinking...</span>
+            </div>
           )}
           <div ref={messagesEndRef} />
         </div>

@@ -33,7 +33,7 @@ const Home = () => {
     const fetchBooks = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get("/session/");
+        const response = await api.get("/s/");
         if(response.status !== 200){
           throw new Error(response.data)
         }
