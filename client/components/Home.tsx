@@ -1,20 +1,18 @@
 "use client";
 
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card";
 import api from "@/lib/api";
+import { formatDistanceToNow } from "date-fns";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { formatRelative } from "date-fns/fp";
-import { formatDistanceToNow } from "date-fns";
 
 interface Session {
   id: string;
@@ -48,15 +46,6 @@ const Home = () => {
     fetchBooks();
   }, []);
 
-  // const handleDelete = async (id: string) => {
-  //   try {
-  //     await api.delete(`/book/delete/${id}`);
-  //     setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
-  //   } catch (error) {
-  //     console.error("Failed to delete book:", error);
-  //   }
-  // };
-
   if (isLoading) return <Loading />;
 
   if (sessions.length === 0)
@@ -64,7 +53,7 @@ const Home = () => {
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-7xl mx-auto">
-      {sessions.map(({ id, name, createdAt, user }) => (
+      {sessions.map(({ id, name, createdAt }) => (
         <Link href={`/session/${id}`} key={id}>
         
         

@@ -1,20 +1,9 @@
-import Header from "@/components/Header";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/App-Sidebar";
 
 export const metadata: Metadata = {
   title: "Rae",
-  description: "Book reviews",
 };
 
 export default function MainLayout({
@@ -23,8 +12,15 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="m-auto w-full flex flex-col items-center gap-4 h-full">
-      <section className="w-full max-w-7xl">{children}</section>
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full ">
+        <SidebarTrigger className="fixed top-4" />
+   <section className="">
+        {children}
+   </section>
+      </main>
+    </SidebarProvider>
+  
   );
 }

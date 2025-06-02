@@ -30,7 +30,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
         }
         const ans = res.data;
         setMessages(ans);
-      } catch (e: any) {
+      } catch (e) {
         if (e instanceof AxiosError) {
           console.log(e.message);
         }
@@ -131,7 +131,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
               placeholder="Type your message..."
               className="resize-none min-h-[60px] max-h-[200px] pr-12 border-none bg-transparent focus:border-none focus-visible:ring-0 focus-visible:ring-offset-0"
               onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
             />
             <button
               onClick={handleMessage}

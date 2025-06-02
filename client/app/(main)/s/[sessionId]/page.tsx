@@ -1,6 +1,10 @@
 import Session from "@/components/Session"
 
-const page = ({ params: { sessionId } }: { params: { sessionId: string } }) => {
+type Params = Promise<{ sessionId: string }>
+
+const page = async (props: { params: Params }) => {
+  
+  const sessionId = (await props.params).sessionId
   
   return (
     <div className="h-full">

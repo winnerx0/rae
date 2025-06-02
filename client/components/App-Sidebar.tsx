@@ -40,7 +40,7 @@ export function AppSidebar() {
         }
         const ans: Session[] = res.data;
         setSessions(ans);
-      } catch (e: any) {
+      } catch (e) {
         if (e instanceof AxiosError) {
         }
       }
@@ -69,7 +69,7 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild className="h-10 flex-1 ">
                       <div>
                         <a
-                          href={`/session/${session.id}`}
+                          href={`/s/${session.id}`}
                           className="flex items-center w-full px-3"
                         >
                           <span className="text-left truncate flex-1">
@@ -92,8 +92,8 @@ export function AppSidebar() {
                                 Delete Session
                               </AlertDialogTitle>
                               <AlertDialogDescription>
-                                Are you sure you want to delete "{session.name}
-                                "? This action cannot be undone.
+                               {` Are you sure you want to delete ${session.name}
+                               ? This action cannot be undone.`}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

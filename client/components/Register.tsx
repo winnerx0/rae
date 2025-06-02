@@ -36,10 +36,9 @@ const Register = () => {
       );
 
       if (!response.ok) {
-        throw new Error((await response.text()) || "Registration failed");
+        throw new Error((await response.json()) || "Registration failed");
       }
 
-      const data = await response.text();
       setSuccess("Registration successful!");
       router.push("/home");
       setError(null);
