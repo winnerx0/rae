@@ -18,8 +18,7 @@ import java.util.List;
 public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private final String id;
 
     private final String name;
 

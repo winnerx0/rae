@@ -22,18 +22,13 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Session> createSession(@Valid @RequestBody SessionDTO sessionDTO) throws IOException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(sessionService.createSession(sessionDTO.getName()));
-    }
-
     @GetMapping("/")
     public ResponseEntity<List<Session>> getSessions(){
         return ResponseEntity.ok(sessionService.getSessions());
     }
 
     @DeleteMapping("/{sessionId}")
-    public ResponseEntity<MessageResponse> createSession(@PathVariable String sessionId) throws IOException {
+    public ResponseEntity<MessageResponse> deleteSession(@PathVariable String sessionId) {
         return ResponseEntity.ok(new MessageResponse(sessionService.deleteSession(sessionId)));
     }
 }

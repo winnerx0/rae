@@ -4,7 +4,7 @@ const page = () => {
   
 
   return (
-    <div className="flex justify-between h-full w-full">
+    <div className="flex justify-center h-dvh w-full">
       <Home/>
     </div>
   )

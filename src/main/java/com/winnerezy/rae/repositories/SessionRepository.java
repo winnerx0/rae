@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface SessionRepository extends JpaRepository<Session, String> {
 
-    Optional<List<Session>> findByUserIdOrderByCreatedAtAsc(String userId);
+    List<Session> findByUserIdOrderByCreatedAtAsc(String userId);
 }

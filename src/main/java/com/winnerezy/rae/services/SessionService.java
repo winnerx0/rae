@@ -3,10 +3,10 @@ package com.winnerezy.rae.services;
 import com.winnerezy.rae.models.Session;
 import com.winnerezy.rae.models.User;
 import com.winnerezy.rae.repositories.SessionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -19,16 +19,23 @@ public class SessionService {
         this.userService = userService;
     }
 
-    public Session createSession(String name) {
+    public void createSession(String sessionId) {
 
-        Session session = new Session(name, userService.getCurrentUser());
+        Optional<Session> existingSession = sessionRepository.findById(sessionId);
+
+        if(existingSession.isPresent()){
+            return;
+        }
+
+        List<Session> sessions = sessionRepository.findByUserIdOrderByCreatedAtAsc(userService.getCurrentUser().getId());
+
+        Session session = new Session(sessionId, "Session " + (sessions.toArray().length + 1), userService.getCurrentUser());
         sessionRepository.save(session);
-        return session;
     }
 
     public List<Session> getSessions(){
         User user = userService.getCurrentUser();
-        return sessionRepository.findByUserIdOrderByCreatedAtAsc(user.getId()).orElseThrow(() -> new EntityNotFoundException("No Sessions Available"));
+        return sessionRepository.findByUserIdOrderByCreatedAtAsc(user.getId());
     }
 
     public String deleteSession(String sessionId){

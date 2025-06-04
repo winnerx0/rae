@@ -4,12 +4,13 @@ import { AxiosError } from "axios";
 import { SendHorizontal } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Textarea } from "./ui/textarea";
+import Loading from "./Loading";
 
 const Session = ({ sessionId }: { sessionId: string }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isThinking, setIsThinking] = useState(false);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -21,7 +22,6 @@ const Session = ({ sessionId }: { sessionId: string }) => {
 
   useEffect(() => {
     async function fetchMessages() {
-      setIsLoading(true);
 
       try {
         const res = await api.get("/ai/" + sessionId);
@@ -89,14 +89,12 @@ const Session = ({ sessionId }: { sessionId: string }) => {
   };
 
   return (
-    <div className="h-[calc(100dvh-120px)] flex flex-col">
+    <div className="h-dvh flex flex-col">
       <div className="flex-1 ">
         <div className="flex flex-col h-full w-full max-w-3xl mx-auto px-4 py-4 gap-4 pb-28">
-          {isLoading && messages.length === 0 ? (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              <p className="text-2xl font-bold">Loading</p>
-            </div>
-          ) : messages.length === 0 && !isLoading ? (
+          {isLoading ? (
+            <Loading />
+          ) : messages.length === 0 ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               <p className="text-2xl font-bold">Start a conversation</p>
             </div>

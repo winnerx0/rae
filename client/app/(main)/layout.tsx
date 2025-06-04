@@ -14,13 +14,10 @@ export default function MainLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full ">
+      <main className="w-full h-full">
         <SidebarTrigger className="fixed top-4" />
-   <section className="">
-        {children}
-   </section>
+        <section className="h-full">{children}</section>
       </main>
     </SidebarProvider>
-  
   );
 }

@@ -1,9 +1,11 @@
 package com.winnerezy.rae.services;
 
+import com.winnerezy.rae.dto.GeminiErrorDTO;
 import com.winnerezy.rae.models.Message;
 import com.winnerezy.rae.models.Session;
 import com.winnerezy.rae.repositories.MessageRepository;
 import com.winnerezy.rae.repositories.SessionRepository;
+import com.winnerezy.rae.exceptions.GeminiException;
 import com.winnerezy.rae.responses.GeminiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,14 @@ public class AIService {
     private final MessageRepository messageRepository;
     private final WebClient webClient;
     private final SessionRepository sessionRepository;
+    private final SessionService sessionService;
 
-    public AIService(MessageRepository messageRepository, WebClient.Builder webClient, SessionRepository sessionRepository){
+    public AIService(MessageRepository messageRepository, WebClient.Builder webClient, SessionRepository sessionRepository, SessionService sessionService){
         this.messageRepository = messageRepository;
         this.webClient = webClient.build();
         this.sessionRepository = sessionRepository;
+        this.sessionService = sessionService;
+
     }
 
     @Value("${gemini.url}")
@@ -39,6 +43,8 @@ public class AIService {
 
     @Transactional
     public String getResponse(String sessionId, String message) {
+
+        sessionService.createSession(sessionId);
 
         List<Message> messages = messageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
 
@@ -71,7 +77,7 @@ public class AIService {
                 .bodyValue(body)
                 .retrieve()
                 .onStatus(httpStatusCode -> httpStatusCode.is4xxClientError() || httpStatusCode.is5xxServerError(),
-                        clientResponse -> clientResponse.bodyToMono(String.class).map(RuntimeException::new))
+                        clientResponse -> clientResponse.bodyToMono(GeminiErrorDTO.class).map((err) -> new GeminiException(err.getError().getMessage(), err.getError().getCode())))
                 .bodyToMono(GeminiResponse.class)
                 .block();
 

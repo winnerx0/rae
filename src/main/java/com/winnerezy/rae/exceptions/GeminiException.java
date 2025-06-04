@@ -1,15 +1,17 @@
-package com.winnerezy.rae.responses;
+package com.winnerezy.rae.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-public class GeminiErrorResponse {
+public class GeminiException extends RuntimeException{
 
-    private String message;
+    private final int code;
 
-    private HttpStatus code;
+    public GeminiException(String message, int code){
+        super(message);
+        this.code = code;
+    }
 
 }

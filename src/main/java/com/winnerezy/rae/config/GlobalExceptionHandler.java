@@ -2,6 +2,7 @@ package com.winnerezy.rae.config;
 
 import com.winnerezy.rae.exceptions.AIException;
 import com.winnerezy.rae.exceptions.AuthException;
+import com.winnerezy.rae.exceptions.GeminiException;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.responses.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -57,6 +58,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AIException.class)
     public ResponseEntity<ErrorResponse> handleAIException(AIException ex) {
         return ResponseEntity.status(ex.getStatus()).body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(GeminiException.class)
+    public ResponseEntity<ErrorResponse> handleGeminiException(GeminiException ex) {
+        return ResponseEntity.status(ex.getCode()).body(new ErrorResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
