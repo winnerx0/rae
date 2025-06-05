@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { deleteSession, getSessions } from "@/actions/server-actions";
 
 const Sessions = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -33,19 +34,10 @@ const Sessions = () => {
 
   useEffect(() => {
     async function fetchSessions() {
-      try {
-        const res = await api.get("/session/");
-        if (res.status !== 200) {
-          throw new Error(res.data);
-        }
-        const ans: Session[] = res.data;
-        setSessions(ans);
-      } catch (e) {
-        if (e instanceof AxiosError) {
-        }
-      } finally {
-        setIsLoading(false);
-      }
+      const res = await getSessions();
+
+      setSessions(res);
+      setIsLoading(false);
     }
     fetchSessions();
   }, []);
@@ -56,7 +48,7 @@ const Sessions = () => {
   ) => {
     e.stopPropagation();
     setSessions((prev) => prev.filter((s) => s.id !== sessionId));
-    await api.delete("/session/" + sessionId);
+    deleteSession(sessionId);
     router.refresh();
   };
 
@@ -84,7 +76,10 @@ const Sessions = () => {
                 <div className="flex gap-2">
                   <ChevronRight className="flex justify-end" />
                   <AlertDialog>
-                    <AlertDialogTrigger onClick={(e) => e.stopPropagation()} className="cursor-pointer">
+                    <AlertDialogTrigger
+                      onClick={(e) => e.stopPropagation()}
+                      className="cursor-pointer"
+                    >
                       <TrashIcon />
                     </AlertDialogTrigger>
                     <AlertDialogContent>

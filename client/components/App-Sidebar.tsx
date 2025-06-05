@@ -1,6 +1,12 @@
 "use client";
 
-import { HistoryIcon, HomeIcon, NotebookTabsIcon } from "lucide-react";
+import {
+  HistoryIcon,
+  HomeIcon,
+  LogOut,
+  NotebookTabsIcon,
+  Settings,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -13,8 +19,21 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import api from "@/lib/api";
+import { AxiosError } from "axios";
+import { getUser, logout } from "@/actions/server-actions";
 
 export function AppSidebar() {
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   const items = [
@@ -32,6 +51,15 @@ export function AppSidebar() {
     },
   ];
 
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getUser();
+      setUser(user);
+    }
+    fetchUser();
+  }, []);
+
+  console.log(user);
   return (
     <Sidebar>
       <SidebarContent>
@@ -63,6 +91,29 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          {" "}
+          <div className="border h-14 rounded-md p-2 mb-8 mx-2">
+            <p className="font-bold">{user?.name}</p>
+            <p className="text-sm">{user?.username}</p>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-60">
+          <DropdownMenuItem
+            onClick={async () => {
+              await logout();
+              router.push("/login");
+            }}
+          >
+            <LogOut /> Logout
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Settings /> Settings
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </Sidebar>
   );
 }

@@ -18,8 +18,7 @@ const Login = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login",
+      const response = await fetch("/api/login",
         {
           method: "POST",
           headers: {
@@ -32,12 +31,10 @@ const Login = () => {
         }
       );
 
+      const { message } = await response.json()
       if (!response.ok) {
-        throw new Error((await response.json()) || "Login failed");
+        throw new Error(message || "Login failed");
       }
-      
-      const { token } = await response.json()
-      localStorage.setItem("token", token)
       router.push("/home");
       setSuccess("Login successful!");
       setError(null);

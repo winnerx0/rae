@@ -1,5 +1,7 @@
 declare type User = {
   name: string
+  username: string
+  
 }
 
 declare type Message = {

@@ -20,8 +20,7 @@ const Register = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/register",
+      const response = await fetch("/api/register",
         {
           method: "POST",
           headers: {
@@ -36,7 +35,7 @@ const Register = () => {
       );
 
       if (!response.ok) {
-        throw new Error((await response.json()) || "Registration failed");
+        throw new Error((await response.json()).message || "Registration failed");
       }
 
       setSuccess("Registration successful!");

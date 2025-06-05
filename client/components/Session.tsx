@@ -5,6 +5,7 @@ import { SendHorizontal } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Textarea } from "./ui/textarea";
 import Loading from "./Loading";
+import { createMessage, getMessages } from "@/actions/server-actions";
 
 const Session = ({ sessionId }: { sessionId: string }) => {
   const [message, setMessage] = useState("");
@@ -22,22 +23,11 @@ const Session = ({ sessionId }: { sessionId: string }) => {
 
   useEffect(() => {
     async function fetchMessages() {
+      const res = await getMessages(sessionId);
 
-      try {
-        const res = await api.get("/ai/" + sessionId);
-        if (res.status !== 200) {
-          throw new Error(res.data.message);
-        }
-        const ans = res.data;
-        setMessages(ans);
-      } catch (e) {
-        if (e instanceof AxiosError) {
-          console.log(e.message);
-        }
-      } finally {
-        setIsLoading(false);
-        setIsThinking(false);
-      }
+      setMessages(res);
+      setIsLoading(false);
+      setIsThinking(false);
     }
     fetchMessages();
   }, [sessionId]);
@@ -57,25 +47,17 @@ const Session = ({ sessionId }: { sessionId: string }) => {
       };
       setMessages((prev) => [...prev, userMessage]);
 
-      const res = await api.post("/ai/" + sessionId, {
-        message: text,
-      });
-
-      if (res.status !== 201) {
-        throw new Error(res.data);
-      }
+      const content = await createMessage(sessionId, text);
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: res.data.message,
+        content,
         role: "model",
         createdAt: new Date(),
       };
       setMessages((prev) => [...prev, aiMessage]);
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e);
-      }
+      console.log(e);
     } finally {
       setIsThinking(false);
     }
