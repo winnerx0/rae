@@ -1,36 +1,32 @@
 "use client";
 
 import {
-  HistoryIcon,
-  HomeIcon,
-  LogOut,
-  NotebookTabsIcon,
-  Settings,
+    HistoryIcon,
+    HomeIcon,
+    LogOut,
+    NotebookTabsIcon,
+    Settings,
 } from "lucide-react";
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { getUser, logout } from "@/lib/server-actions";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
-import { AxiosError } from "axios";
-import { getUser, logout } from "@/actions/server-actions";
 
 export function AppSidebar() {
   const [user, setUser] = useState<User | null>(null);
@@ -93,14 +89,15 @@ export function AppSidebar() {
       </SidebarContent>
 
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          {" "}
-          <div className="border h-14 rounded-md p-2 mb-8 mx-2">
-            <p className="font-bold">{user?.name}</p>
-            <p className="text-sm">{user?.username}</p>
-          </div>
+        <DropdownMenuTrigger  className="border h-14 rounded-full mb-8 mx-2 outline-none shadow-sm">
+      
+          <p className="font-bold">{user?.name}</p>
+          <p className="text-sm">{user?.username}</p>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-60">
+          <DropdownMenuItem>
+            <Settings /> Settings
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={async () => {
               await logout();
@@ -108,9 +105,6 @@ export function AppSidebar() {
             }}
           >
             <LogOut /> Logout
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings /> Settings
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

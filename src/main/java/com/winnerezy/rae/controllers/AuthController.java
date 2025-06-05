@@ -5,11 +5,9 @@ import com.winnerezy.rae.dto.RegisterDTO;
 import com.winnerezy.rae.responses.AuthResponse;
 import com.winnerezy.rae.services.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,5 +27,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginDTO loginDTO){
         return ResponseEntity.ok(new AuthResponse(authService.login(loginDTO)));
+    }
+
+    @GetMapping("/verify-token")
+    public ResponseEntity<AuthResponse> verifyToken(@RequestHeader("Authorization") String authorization){
+        if(authorization.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse("Token Required"));
+        }
+        String token = authorization.substring(7);
+        return ResponseEntity.ok(new AuthResponse(authService.verifyToken(token)));
     }
 }

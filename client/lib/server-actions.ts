@@ -67,6 +67,7 @@ export const getSessions = async () => {
 export const deleteSession = async (sessionId: string) => {
   const cookieStore = await cookies();
   await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/session/${sessionId}`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${cookieStore.get("token")?.value}`,

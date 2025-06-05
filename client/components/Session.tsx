@@ -1,11 +1,9 @@
 "use client";
-import api from "@/lib/api";
-import { AxiosError } from "axios";
+import { createMessage, getMessages } from "@/lib/server-actions";
 import { SendHorizontal } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
-import { Textarea } from "./ui/textarea";
+import { useEffect, useRef, useState } from "react";
 import Loading from "./Loading";
-import { createMessage, getMessages } from "@/actions/server-actions";
+import { Textarea } from "./ui/textarea";
 
 const Session = ({ sessionId }: { sessionId: string }) => {
   const [message, setMessage] = useState("");

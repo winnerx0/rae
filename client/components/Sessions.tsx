@@ -1,30 +1,26 @@
 "use client";
 
+import { deleteSession, getSessions } from "@/lib/server-actions";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+    Card,
+    CardHeader,
+    CardTitle
 } from "@/components/ui/card";
-import api from "@/lib/api";
-import { AxiosError } from "axios";
 import { ChevronRight, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { deleteSession, getSessions } from "@/actions/server-actions";
 
 const Sessions = () => {
   const [sessions, setSessions] = useState<Session[]>([]);

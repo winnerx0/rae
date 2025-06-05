@@ -49,8 +49,8 @@ const Login = () => {
   };
 
   return (
-    <form className="w-full max-w-[500px] rounded-md border px-4 py-6 gap-8 flex flex-col justify-center">
-      <h2 className="text-2xl font-bold">Login</h2>
+    <form className="w-full max-w-[500px] px-4 py-6 gap-8 flex flex-col justify-center">
+      <h2 className="text-3xl font-bold mb-8">Login</h2>
       {success && <p className="text-green-500">{success}</p>}
       <div className="space-y-2 ">
         <Label>Email</Label>

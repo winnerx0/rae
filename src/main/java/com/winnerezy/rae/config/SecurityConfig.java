@@ -24,16 +24,13 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final CustomUserDetailsService userDetailsService;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDenied restAccessDenied;
 
     public SecurityConfig(JwtFilter jwtFilter,
-                          CustomUserDetailsService userDetailsService,
                           RestAuthenticationEntryPoint restAuthenticationEntryPoint,
                           RestAccessDenied restAccessDenied){
         this.jwtFilter = jwtFilter;
-        this.userDetailsService = userDetailsService;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.restAccessDenied = restAccessDenied;
     }

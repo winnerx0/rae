@@ -4,7 +4,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const { email, password } = await req.json();
 
-    console.log(email)
+    console.log(email);
     const res = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login",
       {
@@ -13,12 +13,15 @@ export const POST = async (req: NextRequest) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (res.status !== 200) {
       const error = await res.json();
-      return NextResponse.json({ message: error.message }, { status: res.status });
+      return NextResponse.json(
+        { message: error.message },
+        { status: res.status },
+      );
     }
     const { token } = await res.json();
 
@@ -35,9 +38,8 @@ export const POST = async (req: NextRequest) => {
 
     return response;
   } catch (e) {
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message }, { status: 500 });
+    }
   }
 };

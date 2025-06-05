@@ -3,6 +3,7 @@ package com.winnerezy.rae.services;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.models.User;
 import com.winnerezy.rae.repositories.UserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

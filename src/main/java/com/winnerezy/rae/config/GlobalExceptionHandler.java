@@ -11,6 +11,8 @@ import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -65,8 +67,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getCode()).body(new ErrorResponse(ex.getMessage()));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            IllegalStateException.class
+    })
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(ex.getMessage()));
+    }
+
+
+
 }

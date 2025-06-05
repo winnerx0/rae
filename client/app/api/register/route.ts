@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -42,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     });
     return NextResponse.json("Register Successful");
   } catch (e) {
-    if (e instanceof AxiosError) {
+    if (e instanceof Error) {
       return NextResponse.json(
         { message: e.message },
         {

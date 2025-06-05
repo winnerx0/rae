@@ -1,5 +1,7 @@
 package com.winnerezy.rae.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.winnerezy.rae.responses.ErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,16 +13,16 @@ import java.io.IOException;
 
 @Component
 public class RestAccessDenied implements AccessDeniedHandler {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setContentType("application/json");
-        response.getWriter().write("""
-                {
-                "error": "Forbidden",
-                "message": "Permission denied to access"
-                }
-                """);
-        System.err.println(accessDeniedException.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse("Permission denied to access");
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }

@@ -1,5 +1,6 @@
 package com.winnerezy.rae.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,11 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity(name = "users")
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @JsonIgnore
     private String password;
 
     private String username;
@@ -33,9 +35,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Session> sessions;
 
+    @Enumerated
+    private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record RegisterDTO(
-        @NotBlank(message = "Username cannot be blank")
+        @NotBlank(message = "Name cannot be blank")
         String name,
 
         @NotBlank(message = "Password cannot be blank")
