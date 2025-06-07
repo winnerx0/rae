@@ -58,15 +58,17 @@ const Login = () => {
           placeholder="mark10@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="py-5"
         />
       </div>
-      <div className="space-y-2 ">
+      <div className="space-y-2">
         <Label>Password</Label>
         <Input
           name="password"
           placeholder="mark1234"
           type="password"
           value={password}
+          className="py-5"
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
@@ -75,14 +77,14 @@ const Login = () => {
       <Button
         onClick={handleSubmit}
         disabled={isLoading}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 py-5 rounded-full"
       >
         <p>Login</p>
 
         {isLoading && <p className="loader"></p>}
       </Button>
       <Button
-        className="mt-8"
+        className="mt-4 rounded-full py-5"
         onClick={() =>
           router.push("http://localhost:8080/oauth2/authorization/google")
         }

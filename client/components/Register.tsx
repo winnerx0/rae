@@ -21,22 +21,22 @@ const Register = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: username,
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: username,
+          email,
+          password,
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error((await response.json()).message || "Registration failed");
+        throw new Error(
+          (await response.json()).message || "Registration failed",
+        );
       }
 
       setSuccess("Registration successful!");
@@ -64,6 +64,7 @@ const Register = () => {
           placeholder="Mark"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="py-5"
         />
       </div>
       <div className="space-y-2 ">
@@ -73,6 +74,7 @@ const Register = () => {
           placeholder="mark10@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="py-5"
         />
       </div>
       <div className="space-y-2 ">
@@ -83,20 +85,21 @@ const Register = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="py-5"
         />
       </div>
       {error && <p className="text-red-500 text-center text-sm">{error}</p>}
       <Button
         onClick={handleSubmit}
         disabled={isLoading}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 py-5 rounded-full"
       >
         <p>Register</p>
 
         {isLoading && <p className="loader"></p>}
       </Button>
       <Button
-        className="mt-8"
+        className="mt-4 py-5 rounded-full"
         onClick={() =>
           router.push("http://localhost:8080/oauth2/authorization/google")
         }
