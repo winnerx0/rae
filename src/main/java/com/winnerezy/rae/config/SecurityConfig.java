@@ -1,16 +1,11 @@
 package com.winnerezy.rae.config;
 
-import com.winnerezy.rae.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -26,29 +21,38 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDenied restAccessDenied;
+    private final OauthConfig oauthConfig;
+    private final OAuthSuccessHandler authSuccessHandler;
 
     public SecurityConfig(JwtFilter jwtFilter,
                           RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-                          RestAccessDenied restAccessDenied){
+                          RestAccessDenied restAccessDenied,
+                          OauthConfig oauthConfig,
+                          OAuthSuccessHandler authSuccessHandler){
         this.jwtFilter = jwtFilter;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.restAccessDenied = restAccessDenied;
+        this.oauthConfig = oauthConfig;
+        this.authSuccessHandler = authSuccessHandler;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, OAuthSuccessHandler oAuthSuccessHandler) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/login/**", "/oauth2/**", "/auth/**").permitAll()
                         .anyRequest().authenticated()
-
-                )
-                .formLogin().disable()
+                ).oauth2Login(oauth -> oauth
+                        .successHandler(oAuthSuccessHandler)
+                        .userInfoEndpoint(userInfo -> {
+                            userInfo.userService(oauthConfig.oauthService());
+                            userInfo.oidcUserService(oauthConfig.oidcAuthService());
+                        }))
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(restAuthenticationEntryPoint)
                         .accessDeniedHandler(restAccessDenied))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
@@ -57,7 +61,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
 

@@ -1,7 +1,7 @@
 package com.winnerezy.rae.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.winnerezy.rae.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity(name = "users")
 @NoArgsConstructor
@@ -23,19 +22,25 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
     private String id;
 
     @JsonIgnore
     private String password;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column
+    private String profilePicture;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Session> sessions;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
     @Override

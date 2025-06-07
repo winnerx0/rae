@@ -4,12 +4,11 @@ import com.winnerezy.rae.config.JwtUtil;
 import com.winnerezy.rae.dto.LoginDTO;
 import com.winnerezy.rae.dto.RegisterDTO;
 import com.winnerezy.rae.exceptions.AuthException;
-import com.winnerezy.rae.models.Role;
+import com.winnerezy.rae.enums.Role;
 import com.winnerezy.rae.models.User;
 import com.winnerezy.rae.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,13 +32,8 @@ public class AuthService {
 
     public String register(RegisterDTO registerDTO){
 
-       try {
            if(userRepository.findByUsername(registerDTO.email()).isPresent()){
                throw new AuthException("User with that email exists");
-           }
-
-           if(userRepository.findByName(registerDTO.name()).isPresent()){
-               throw new AuthException("User with that username exists");
            }
 
            User user = new User();
@@ -50,10 +44,6 @@ public class AuthService {
            userRepository.save(user);
 
            return jwtUtil.generateToken(registerDTO.email(), Role.USER);
-       } catch(AuthException e){
-           return e.getMessage();
-       }
-
     }
 
     public String login(LoginDTO loginDTO){

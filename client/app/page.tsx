@@ -39,11 +39,11 @@ const page = () => {
       <section className="w-full max-w-5xl self-center">
         <div className="self-start mt-36 lg:w-2/3">
           <h4 className="text-3xl md:text-4xl xl:text-6xl font-bold">
-            Summarize your Meetings <span className="text-blue-500">Faster</span> And{" "}
+            Feel Calm And Prioterize Your Mental Health <span className="text-blue-500">Faster</span> And{" "}
             <span className="text-blue-500">Easier</span>
           </h4>
           <p className="text-lg md:text-2xl">
-            Record and Understand your meetings as you go
+            Better Understanding Of Yourself
           </p>
         </div>
       </section>

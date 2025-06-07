@@ -79,18 +79,26 @@ const Session = ({ sessionId }: { sessionId: string }) => {
               <p className="text-2xl font-bold">Start a conversation</p>
             </div>
           ) : (
-            messages.map((m) => (
-              <div
-                key={m.id}
-                className={`bg-card border p-3 h-min w-max rounded-lg max-w-[80%] ${
-                  m.role === "user"
-                    ? "self-end bg-primary text-primary-foreground"
-                    : "self-start"
-                }`}
-              >
-                <p className="text-wrap whitespace-pre-wrap">{m.content}</p>
-              </div>
-            ))
+            messages.map((m) => {
+              const formattedText = m.content
+                .replace(/\*(.*?)\*/g, "<strong>$1</strong>")
+                .replace(/_(.*?)_/g, "<em>$1</em>");
+              return (
+                <div
+                  key={m.id}
+                  className={`bg-card border p-3 h-min w-max rounded-lg max-w-[80%] ${
+                    m.role === "user"
+                      ? "self-end bg-primary text-primary-foreground"
+                      : "self-start"
+                  }`}
+                >
+                  <p
+                    dangerouslySetInnerHTML={{ __html: formattedText }}
+                    className="text-wrap whitespace-pre-wrap"
+                  />
+                </div>
+              );
+            })
           )}
           {isThinking && (
             <div className="bg-card border p-3 h-min w-max rounded-lg max-w-[80%] self-start">
@@ -101,8 +109,8 @@ const Session = ({ sessionId }: { sessionId: string }) => {
         </div>
       </div>
 
-      <div className="bg-background fixed bottom-0 w-full max-w-3xl self-center">
-        <div className="w-full max-w-3xl mx-auto p-4">
+      <div className="bg-background bottom-0 w-full max-w-3xl self-center">
+        <div className="w-full mx-auto p-4">
           <div className="relative bg-card rounded-xl border">
             <Textarea
               value={message}

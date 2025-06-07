@@ -17,7 +17,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/me")
     public User getUserDetails(){
         return userService.getCurrentUser();

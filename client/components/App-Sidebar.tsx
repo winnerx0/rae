@@ -27,11 +27,12 @@ import {
 import { getUser, logout } from "@/lib/server-actions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export function AppSidebar() {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-
+console.log(user)
   const items = [
     {
       name: "Home",
@@ -55,7 +56,6 @@ export function AppSidebar() {
     fetchUser();
   }, []);
 
-  console.log(user);
   return (
     <Sidebar>
       <SidebarContent>
@@ -90,9 +90,18 @@ export function AppSidebar() {
 
       <DropdownMenu>
         <DropdownMenuTrigger  className="border h-14 rounded-full mb-8 mx-2 outline-none shadow-sm">
-      
-          <p className="font-bold">{user?.name}</p>
-          <p className="text-sm">{user?.username}</p>
+     {
+       user && (
+         <div className="flex items-center gap-2 px-2">
+           
+                <Image src={user.profilePicture} width={30} height={30} alt={ user.name } className="rounded-full" />
+              <div className="text-start text-[12px]">
+                <p className="font-semibold">{user.name}</p>
+                <p className="text-sm">{user.username}</p>
+              </div>
+         </div>
+       )
+     }
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-60">
           <DropdownMenuItem>

@@ -18,11 +18,13 @@ public class RestAccessDenied implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+        response.setContentType("application/json");
 
         ErrorResponse errorResponse = new ErrorResponse("Permission denied to access");
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }

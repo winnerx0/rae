@@ -1,6 +1,18 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const middleware = async (req: NextRequest) => {
+  const cookieStore = await cookies();
+  if (req.nextUrl.pathname.startsWith("/success")) {
+    cookieStore.set({
+      name: "token",
+      value: req.nextUrl.searchParams.values().toArray()[0],
+      sameSite: "lax",
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return NextResponse.redirect(new URL("/home", req.nextUrl));
+  }
   const token = req.cookies.get("token")?.value;
 
   if (!token) {
@@ -12,7 +24,7 @@ export const middleware = async (req: NextRequest) => {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     },
   );
@@ -23,5 +35,5 @@ export const middleware = async (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/home", "/s/:path*", "/sessions"],
+  matcher: ["/home", "/s/:path*", "/sessions", "/success/:path*"],
 };

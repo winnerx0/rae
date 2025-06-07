@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -93,6 +94,14 @@ const Register = () => {
         <p>Register</p>
 
         {isLoading && <p className="loader"></p>}
+      </Button>
+      <Button
+        className="mt-8"
+        onClick={() =>
+          router.push("http://localhost:8080/oauth2/authorization/google")
+        }
+      >
+        <FcGoogle /> Continue With Google
       </Button>
       <p className="text-center">
         Have an account ?{" "}
