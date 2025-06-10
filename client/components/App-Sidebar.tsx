@@ -94,7 +94,7 @@ console.log(user)
        user && (
          <div className="flex items-center gap-2 px-2">
            
-                <Image src={user.profilePicture} width={30} height={30} alt={ user.name } className="rounded-full" />
+                <Image src={user.profilePicture} width={100} height={100} alt={ user.name } className="rounded-full size-[40px]" quality={100} />
               <div className="text-start text-[12px]">
                 <p className="font-semibold">{user.name}</p>
                 <p className="text-sm">{user.username}</p>

@@ -5,12 +5,14 @@ import com.winnerezy.rae.dto.RegisterDTO;
 import com.winnerezy.rae.responses.AuthResponse;
 import com.winnerezy.rae.services.AuthService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -20,6 +22,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterDTO registerDTO){
+        log.info("user {}", registerDTO.email());
         return ResponseEntity.ok(new AuthResponse(authService.register(registerDTO)));
 
     }
