@@ -88,10 +88,10 @@ const Sessions = () => {
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className={"rounded-md"} >Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={(e) => handleDeleteSession(session.id, e)}
-                          className="text-white"
+                          className={"rounded-md"}
                         >
                           Delete
                         </AlertDialogAction>

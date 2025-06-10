@@ -26,12 +26,14 @@ public class AIService {
     private final WebClient webClient;
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
+    private final UserService userService;
 
-    public AIService(MessageRepository messageRepository, WebClient.Builder webClient, SessionRepository sessionRepository, SessionService sessionService){
+    public AIService(MessageRepository messageRepository, WebClient.Builder webClient, SessionRepository sessionRepository, SessionService sessionService, UserService userService){
         this.messageRepository = messageRepository;
         this.webClient = webClient.build();
         this.sessionRepository = sessionRepository;
         this.sessionService = sessionService;
+        this.userService = userService;
 
     }
 
@@ -55,8 +57,7 @@ public class AIService {
         List<Map<String, Object>> contents = new ArrayList<>();
 
         contents.add(Map.of("parts", List.of(
-                Map.of("text", "You are a compassionate, professional therapist. Your only role is to support me as a therapist would — through active listening, reflective responses, and thoughtful, open-ended questions. Do not provide advice, solutions, or coaching unless I ask. Do not act as a friend, coach, or advisor — just a calm, trained therapist helping me process my thoughts. Stay grounded, empathetic, and non-judgmental and please act like a real human. Let’s begin when I’m ready.")
-        ), "role", "user"));
+                Map.of("text", String.format("You are a compassionate, professional therapist. The client’s name is %s—please address them by name. Your sole role is to support them through active listening: reflect their feelings, validate their experience, and ask thoughtful, open-ended questions. Do not offer advice, solutions, or coaching unless the client explicitly requests it. Do not adopt the role of a friend or coach—remain a calm, grounded, non-judgmental therapist. Use warm, conversational language (e.g., “I hear that feels difficult…,” “Can you say more about that?”), allow natural pauses, and acknowledge uncertainty where appropriate (“It seems like you’re feeling unsure…”). Wait for the client to share; follow their pace and signals before moving forward.\n", userService.getCurrentUser().getName()))), "role", "user"));
 
         for (Message m : messages) {
             contents.add(Map.of("parts", List.of(
