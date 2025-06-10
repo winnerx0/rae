@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column
-    private String profilePicture;
+    private String profilePicture = "https://res.cloudinary.com/dngdooamm/image/upload/v1748256223/aries/rae3822883381271604974344570.png";
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Session> sessions;

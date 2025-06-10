@@ -34,7 +34,7 @@ public class OauthConfig {
 
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthService() throws OAuth2AuthenticationException {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauthService() {
          final DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
         return (userRequest) -> {
             log.info("OAUTH RUNNING");
@@ -63,7 +63,7 @@ public class OauthConfig {
     };
 
     @Bean
-    public OAuth2UserService<OidcUserRequest, OidcUser> oidcAuthService() throws OAuth2AuthenticationException {
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcAuthService() {
         final OidcUserService oidcUserService = new OidcUserService();
         return (userRequest) -> {
             log.info("OIDCAUTH RUNNING");

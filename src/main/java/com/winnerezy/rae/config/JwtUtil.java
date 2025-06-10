@@ -20,7 +20,7 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     @Value("${jwt.expiration}")
-    private long EXPIRATION_TIME;
+    private  long EXPIRATION_TIME;
 
     private SecretKey getSigningKey(){
         byte[] ketBytes = Base64.getDecoder().decode(SECRET_KEY);
