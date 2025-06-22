@@ -21,7 +21,7 @@ Rae is a modern AI therapist platform built to help users talk about their probl
 
 ---
 
-## 📂 Features
+## Features
 
 * AI-powered therapist chat experience
 * Secure user authentication and session management
