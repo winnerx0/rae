@@ -109,7 +109,7 @@ const Session = ({ sessionId }: { sessionId: string }) => {
         </div>
       </div>
 
-      <div className="bg-background bottom-0 w-full max-w-3xl self-center">
+      <div className="bg-background bottom-0 w-full max-w-3xl self-center fixed">
         <div className="w-full mx-auto p-4">
           <div className="relative bg-card rounded-xl border">
             <Textarea
