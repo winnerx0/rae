@@ -37,10 +37,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorResponse(ex.getMethod() + " Not Allowed"));
     }
 
-//    @ExceptionHandler(NoResourceFoundException.class)
-//    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Endpoint Not Found"));
-//    }
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Endpoint Not Found"));
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {

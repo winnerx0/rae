@@ -1,4 +1,4 @@
-package com.winnerezy.rae.services;
+package com.winnerezy.rae.services.impl;
 
 import com.winnerezy.rae.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService  {
+public class CustomUserDetailsServiceImpl implements UserDetailsService  {
 
     private final UserRepository userRepository; // inject your repository
 
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

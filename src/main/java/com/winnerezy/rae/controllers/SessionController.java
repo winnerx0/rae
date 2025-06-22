@@ -1,15 +1,11 @@
 package com.winnerezy.rae.controllers;
 
-import com.winnerezy.rae.dto.SessionDTO;
 import com.winnerezy.rae.models.Session;
 import com.winnerezy.rae.responses.MessageResponse;
 import com.winnerezy.rae.services.SessionService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController

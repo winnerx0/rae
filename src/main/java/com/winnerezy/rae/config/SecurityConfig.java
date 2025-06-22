@@ -37,14 +37,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, OAuthSuccessHandler oAuthSuccessHandler) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/login/**", "/oauth2/**", "/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/login/**", "/oauth2/**", "/auth/**", "/swagger-ui/**", "/v3/**").permitAll()
                         .anyRequest().authenticated()
                 ).oauth2Login(oauth -> oauth
-                        .successHandler(oAuthSuccessHandler)
+                        .successHandler(authSuccessHandler)
                         .userInfoEndpoint(userInfo -> {
                             userInfo.userService(oauthConfig.oauthService());
                             userInfo.oidcUserService(oauthConfig.oidcAuthService());

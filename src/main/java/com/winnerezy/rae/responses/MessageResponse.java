@@ -3,9 +3,9 @@ package com.winnerezy.rae.responses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class MessageResponse {
+public class MessageResponse extends SuperResponse {
 
-    private String message;
+    public  MessageResponse(String message){
+        super(message);
+    }
 }

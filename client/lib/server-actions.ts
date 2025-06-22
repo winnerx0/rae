@@ -76,6 +76,37 @@ export const deleteSession = async (sessionId: string) => {
 };
 
 export const logout = async () => {
-    const cookieStore = await cookies();
-  cookieStore.delete("token")
-}
+  const cookieStore = await cookies();
+  cookieStore.delete("token");
+};
+
+export const createFeedback = async ({
+  message,
+  stars,
+}: {
+  message: string;
+  stars: number;
+}) => {
+  const cookieStore = await cookies();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/feedback/create`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookieStore.get("token")?.value}`,
+      },
+      body: JSON.stringify({
+        message,
+        stars,
+      }),
+    },
+  );
+
+  if (res.status !== 201) {
+    return (await res.json()).message;
+  }
+  const { message: response } = await res.json();
+
+  return response as string;
+};

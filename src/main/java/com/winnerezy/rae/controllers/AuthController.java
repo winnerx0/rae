@@ -33,7 +33,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify-token")
-    public ResponseEntity<AuthResponse> verifyToken(@RequestHeader("Authorization") String authorization){
+    public ResponseEntity<AuthResponse> verifyToken(@RequestHeader(value = "Authorization") String authorization){
         if(authorization.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse("Token Required"));
         }
