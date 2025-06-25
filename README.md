@@ -43,13 +43,13 @@ Simon is a modern AI therapist platform built to help users talk about their pro
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/winnerx0/rae.git
-cd rae
+git clone https://github.com/winnerx0/simon.git
+cd simon
 ```
 
 ### 2. Set up environment variables
 
-Create a `.env` file in `rae/` and `client/` directories:
+Create a `.env` file in `simon/` and `client/` directories:
 
 **.env**
 
@@ -80,7 +80,7 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8080/api/v1
 ### 3. Start the application
 
 ```bash
-docker build -t rae .
+docker build -t simon .
 ```
 
 * Frontend: [http://localhost:3000](http://localhost:3000)
