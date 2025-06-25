@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/App-Sidebar";
 
 export const metadata: Metadata = {
-  title: "Rae",
+  title: "Simon",
 };
 
 export default function MainLayout({

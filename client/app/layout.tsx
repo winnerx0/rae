@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rae",
+  title: "Simon",
   description: "AI Therapist",
 };
 

@@ -61,7 +61,7 @@ console.log(user)
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-2xl font-bold mb-4">
-            Rae
+            Simon
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="flex flex-col gap-2">

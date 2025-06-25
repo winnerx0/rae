@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.winnerezy</groupId>
-	<artifactId>rae</artifactId>
+	<artifactId>simon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rae</name>
+	<name>simon</name>
 	<description>Meeting summarizer</description>
 	<url/>
 	<licenses>

@@ -1,6 +1,6 @@
-# Rae - Your AI-Powered Therapist
+# Simon - Your AI-Powered Therapist
 
-Rae is a modern AI therapist platform built to help users talk about their problems and receive thoughtful, AI-driven responses. The platform combines a sleek frontend with a powerful backend to deliver a seamless mental wellness experience.
+Simon is a modern AI therapist platform built to help users talk about their problems and receive thoughtful, AI-driven responses. The platform combines a sleek frontend with a powerful backend to deliver a seamless mental wellness experience.
 
 ---
 
@@ -100,7 +100,7 @@ The API is documented using Swagger.
 
 ## Deployment
 
-To deploy Rae to production:
+To deploy Simon to production:
 
 1. Use Docker
 2. Point environment variables to production database and frontend URLs

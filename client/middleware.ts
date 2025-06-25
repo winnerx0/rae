@@ -20,7 +20,7 @@ export const middleware = async (req: NextRequest) => {
   }
 
   const res = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/verify-token",
+    process.env.NEXT_PUBLIC_BACKEND_URL + "/user/verify-token",
     {
       headers: {
         "Content-Type": "application/json",
