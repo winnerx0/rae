@@ -1,4 +1,4 @@
-package com.winnerezy.rae.config;
+package com.winnerezy.rae.utils;
 
 import com.winnerezy.rae.enums.Role;
 import io.jsonwebtoken.Claims;

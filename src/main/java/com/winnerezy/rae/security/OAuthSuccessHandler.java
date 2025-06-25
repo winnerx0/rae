@@ -1,7 +1,7 @@
-package com.winnerezy.rae.config;
+package com.winnerezy.rae.security;
 
 import com.winnerezy.rae.enums.Role;
-import jakarta.servlet.FilterChain;
+import com.winnerezy.rae.utils.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

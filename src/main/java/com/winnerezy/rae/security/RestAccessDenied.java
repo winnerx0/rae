@@ -1,4 +1,4 @@
-package com.winnerezy.rae.config;
+package com.winnerezy.rae.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winnerezy.rae.responses.ErrorResponse;

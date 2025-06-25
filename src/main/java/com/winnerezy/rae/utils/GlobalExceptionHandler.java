@@ -1,28 +1,19 @@
-package com.winnerezy.rae.config;
+package com.winnerezy.rae.utils;
 
 import com.winnerezy.rae.exceptions.AIException;
 import com.winnerezy.rae.exceptions.AuthException;
 import com.winnerezy.rae.exceptions.GeminiException;
 import com.winnerezy.rae.exceptions.NoUserFoundException;
 import com.winnerezy.rae.responses.ErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -78,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String error = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(error));
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ErrorResponse(error));
     }
 
 }

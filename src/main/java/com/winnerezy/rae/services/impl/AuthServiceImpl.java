@@ -1,6 +1,6 @@
 package com.winnerezy.rae.services.impl;
 
-import com.winnerezy.rae.config.JwtUtil;
+import com.winnerezy.rae.utils.JwtUtil;
 import com.winnerezy.rae.dto.LoginDTO;
 import com.winnerezy.rae.dto.RegisterDTO;
 import com.winnerezy.rae.exceptions.AuthException;

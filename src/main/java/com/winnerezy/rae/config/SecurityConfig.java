@@ -1,5 +1,8 @@
 package com.winnerezy.rae.config;
 
+import com.winnerezy.rae.security.OAuthSuccessHandler;
+import com.winnerezy.rae.security.RestAccessDenied;
+import com.winnerezy.rae.security.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,8 +44,10 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/login/**", "/oauth2/**", "/auth/**", "/swagger-ui/**", "/v3/**").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/api/v1/auth/**", "/login/**", "/oauth2/**", "/auth/**", "/swagger-ui/**", "/v3/**").permitAll()
+                                .requestMatchers("/api/v1/feedback/**", "/api/v1/ai/**", "/api/v1/session/**", "/api/v1/user/**")
+                                .authenticated()
+                                .anyRequest().denyAll()
                 ).oauth2Login(oauth -> oauth
                         .successHandler(authSuccessHandler)
                         .userInfoEndpoint(userInfo -> {

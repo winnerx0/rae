@@ -1,4 +1,4 @@
-package com.winnerezy.rae.config;
+package com.winnerezy.rae.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winnerezy.rae.responses.ErrorResponse;
@@ -23,7 +23,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
 
-        ErrorResponse errorResponse = new ErrorResponse("Provide a valid token");
+        ErrorResponse errorResponse = new ErrorResponse("You are not authorized to access this resource");
 
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
