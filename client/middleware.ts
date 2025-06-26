@@ -6,7 +6,7 @@ export const middleware = async (req: NextRequest) => {
   if (req.nextUrl.pathname.startsWith("/success")) {
     cookieStore.set({
       name: "token",
-      value: req.nextUrl.searchParams.values().toArray()[0],
+      value: req.nextUrl.searchParams.get("token")!,
       sameSite: "lax",
       secure: true,
       maxAge: 60 * 60 * 24 * 7,
