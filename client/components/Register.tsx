@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import GoogleLogin from "./GoogleLogin";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -98,14 +98,7 @@ const Register = () => {
 
         {isLoading && <p className="loader"></p>}
       </Button>
-      <Button
-        className="mt-4 py-5 rounded-full"
-        onClick={() =>
-          router.push("http://localhost:8080/oauth2/authorization/google")
-        }
-      >
-        <FcGoogle /> Continue With Google
-      </Button>
+      <GoogleLogin />
       <p className="text-center">
         Have an account ?{" "}
         <Link className="text-blue-500" href={"/login"}>
