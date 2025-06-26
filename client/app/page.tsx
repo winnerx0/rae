@@ -1,6 +1,6 @@
 import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { AlignRight, ArrowRight, Brain, CheckCircle, Heart, Shield, Star, Users } from "lucide-react"
+import { AlignRight, ArrowRight, Brain, Shield, Star } from "lucide-react"
 import Link from "next/link"
 
 const page = () => {

@@ -11,11 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
-import axios from "axios";
 import { toast } from "sonner";
 import { createFeedback } from "@/lib/server-actions";
 
@@ -51,7 +49,7 @@ const Feedback = () => {
         <CardHeader>
           <CardTitle>Share Your Feedback</CardTitle>
           <CardDescription>
-            We'd love to hear your thoughts and suggestions
+            We&apos;d love to hear your thoughts and suggestions
           </CardDescription>
         </CardHeader>
         <CardContent>
